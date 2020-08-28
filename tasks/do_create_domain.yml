@@ -25,3 +25,11 @@
     mode: 0644
   tags:
     - always
+
+- name: process sets of role accounts
+  become: yes
+  include: do_process_role_set.yml
+  vars:
+    domain: "{{ domain }}"
+    roleset: "{{ item }}"
+  with_items: "{{ domain.rolesets }}"
