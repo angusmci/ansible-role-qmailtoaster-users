@@ -1,4 +1,8 @@
 ---
+- name: announce activity
+  debug:
+    msg: "Processing domain {{ domain.name }} ..."
+
 - name: create the domain
   become: yes
   command: "/home/vpopmail/bin/vadddomain {{ domain.name }} {{ domain.password }}"
