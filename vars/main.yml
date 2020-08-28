@@ -1,0 +1,5 @@
+---
+path_preline: /var/qmail/bin/preline
+path_procmail: /bin/procmail
+path_vdelivermail: /home/vpopmail/bin/vdelivermail
+path_vpopmail_domains_dir: /home/vpopmail/domains
