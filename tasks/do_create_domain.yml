@@ -2,6 +2,8 @@
 - name: announce activity
   debug:
     msg: "Processing domain {{ domain.name }} ..."
+  tags:
+    - always
 
 - name: create the domain
   become: yes
@@ -10,3 +12,14 @@
     creates: "/home/vpopmail/domains/{{ domain.name }}"
   notify:
     - restart dovecot
+  tags:
+    - always
+
+- name: create the .qmail-default file for the domain
+  become: yes
+  template:
+    src: templates/dot_qmail_default.j2
+    dest: /home/vpopmail/domains/{{ domain.name }}/.qmail_default
+    owner: vpopmail
+    group: vchkpw
+    mode: 0644
