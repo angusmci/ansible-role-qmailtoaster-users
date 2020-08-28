@@ -3,4 +3,4 @@
   include: do_create_domain.yml
   vars:
     domain: "{{ item }}"
-  with_items: "{{ qmt_domains }}"
+  with_items: "{{ domains }}"
