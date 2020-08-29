@@ -33,7 +33,6 @@
     - always
 
 - name: create users
-  become: yes
   include_tasks: do_create_user.yml
   vars:
     userdomain: "{{ domain.name }}"
