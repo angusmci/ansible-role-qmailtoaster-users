@@ -37,3 +37,12 @@
     loop_var: roleset
   tags:
     - always
+
+- name: create users
+  include_tasks: do_create_user.yml
+  when: domain.users is defined
+  loop: "{{ domain.users }}"
+  loop_control:
+    loop_var: user
+  tags:
+    - always
