@@ -20,10 +20,10 @@ MAILDIR={{ path_vpopmail_domains_dir }}/{{ userdomain }}/{{ username }}/Maildir/
 INCLUDERC=$PMDIR/rc.{{ filterset }}
 {% endfor %}
 
-{% if address != "" %}
+{% if action == "filterforward" %}
 :0:
 ! {{ address }}
-{% elif delete | bool %}
+{% elif action == "filterdelete" %}
 :0
 /dev/null
 {% else %}
