@@ -1,5 +1,5 @@
 {% if domain.default.action == "filter" %}
-| {{ path_preline }} {{ path_procmail }} -p -m {{ path_vpopmail_domains_dir }}{{ domain.default.domain }}/.procmail-{{ domain.default.user }}/main.rc
+| {{ path_preline }} {{ path_procmail }} -p -m {{ path_vpopmail_domains_dir }}{{ domain.default.domain }}/.procmail-{{ domain.default.user }}/rc.main
 {% elif domain.default.action == "deliver" %}
 {{ domain.default.directory }}
 {% elif domain.default.action == "forward" %}
