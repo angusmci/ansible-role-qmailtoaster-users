@@ -2,3 +2,5 @@
 - name: create user
   debug:
     msg: "Creating {{ user.comment }} ({{ user.name }})"
+  tags:
+    - always
