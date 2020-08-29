@@ -1,15 +1,9 @@
 ---
-- name: announce activity
-  debug:
-    msg: "Processing domain {{ domain.name }} ..."
-  tags:
-    - always
-
 - name: create the domain
   become: yes
-  command: "/home/vpopmail/bin/vadddomain {{ domain.name }} {{ domain.password }}"
+  command: "{{ path_vadddomain }} {{ domain.name }} {{ domain.password }}"
   args:
-    creates: "/home/vpopmail/domains/{{ domain.name }}"
+    creates: "{{ path_vpopmail_domains_dir }}{{ domain.name }}"
   notify:
     - restart dovecot
   tags:
@@ -19,7 +13,7 @@
   become: yes
   template:
     src: templates/dot_qmail_default.j2
-    dest: /home/vpopmail/domains/{{ domain.name }}/.qmail_default
+    dest: "{{ path_vpopmail_domains_dir }}/{{ domain.name }}/.qmail_default"
     owner: vpopmail
     group: vchkpw
     mode: 0644
@@ -39,7 +33,20 @@
     - always
 
 - name: create users
+  become: yes
   include_tasks: do_create_user.yml
+  vars:
+    userdomain: "{{ domain.name }}"
+    username: "{{ user.name }}"
+    password: "{{ user.password }}"
+    comment: "{{ user.comment | default('') }}"
+    quota: "{{ user.quota | default('NOQUOTA') }}"
+    filter: "{{ user.filter | default('no') }}"
+    bounce: "{{ user.bounce | default('no') }}"
+    delete: "{{ user.delete | default('no') }}"
+    address: "{{ user.address | default('') }}"
+    filtersets: "{{ user.filtersets | default(standard_filter_sets) }}"
+    filterdirs: "{{ user.filterdirs | default(standard_filter_directories) }}"
   when: domain.users is defined
   loop: "{{ domain.users }}"
   loop_control:

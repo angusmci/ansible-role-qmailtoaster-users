@@ -6,6 +6,8 @@
 path_preline: /var/qmail/bin/preline
 path_procmail: /bin/procmail
 path_vdelivermail: /home/vpopmail/bin/vdelivermail
+path_vadddomain: /home/vpopmail/bin/vadddomain
+path_vadduser: /home/vpopmail/bin/vadduser
 path_vpopmail_domains_dir: /home/vpopmail/domains
 
 # Rolesets
@@ -86,3 +88,34 @@ roleset_members:
     - ftp
     - usenet
     - uucp
+
+# Filter directories
+#
+# Subdirectories of a user's maildir that are used to sort mail.
+
+standard_filter_directories:
+  - name: JUNKDIR
+    path: .Junk/
+  - name: SPAMDIR
+    path: .Spam.Trapped/
+  - name: BULKDIR
+    path: .Bulk/
+
+# Filter sets
+#
+# Standard filter collections for procmail.
+
+standard_filter_sets:
+  - whitelist
+  - blacklist
+  - subscriptions
+
+# Standard mail subdirectories
+#
+# These are the subdirectories that are expected to exist within a
+# Maildir or its subdirectories
+
+standard_mail_subdirectories:
+  - cur
+  - new
+  - tmp

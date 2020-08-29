@@ -1,6 +1,108 @@
 ---
+# Create a vpopmail user. This uses the 'vadduser' command, which is not idempotent -- it will
+# throw an error if it's run on an existing user. This task has a 'creates' argument that
+# should prevent repeated creation attempts. If for some reason you need to re-create a user,
+# you'll have to manually remove the user's home directory and clean up the database.
+
 - name: create user
-  debug:
-    msg: "Creating {{ user.comment }} ({{ user.name }})"
+  become: yes
+  command: "{{ {{ path_vadduser }}}} -c '{{ comment }}' -q {{ quota }} {{ username }}@{{ userdomain }} {{ password }}"
+  args:
+    creates: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/{{ username }}"
+  notify:
+    - restart dovecot
+  tags:
+    - always
+
+# If the user has the 'filter' flag set to true, create a .procmail directory for the
+# user. The directory will hold the user's procmail log, and any include files.
+-
+- name: create procmail directory
+  become: yes
+  when: filter | bool
+  file:
+    state: directory
+    path: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.procmail-{{ username }}"
+    owner: vpopmail
+    group: vchkpw
+    mode: 0755
+  tags:
+    - always
+
+# If the user has the 'filter' flag set to true, create a .procmailrc file for that user
+# that will contain a skeleton definition for procmail filtering.
+
+- name: create procmailrc
+  become: yes
+  when: filter | bool
+  template:
+    src: templates/dot_procmail_rc_main.j2
+    dest: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.procmail-{{ username }}/rc.main"
+    owner: vpopmail
+    group: vchkpw
+    mode: 0644
+  tags:
+    - always
+
+# If the user has the 'filter' flag set to true, create a set of 'rc.*' files that
+# will hold their procmail recipes.
+
+- name: create procmail include files
+  become: yes
+  when: filter | bool
+  file:
+    state: file
+    path: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.procmail-{{ username }}/rc.{{ filterset }}"
+    owner: vpopmail
+    group: vchkpw
+    mode: 0644
+  loop: "{{ filtersets }}"
+  loop_control:
+    loop_var: filterset
+  tags:
+    - always
+
+# If the user has some Maildir subdirectories specified as part of their definition,
+# set those up.
+
+- name: create mail directories - step 1
+  become: yes
+  file:
+    state: directory
+    path: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/{{ username }}/Maildir/{{ dir.path }}"
+    owner: vpopmail
+    group: vchkpw
+    mode: 0700
+  loop: "{{ filterdirs }}"
+  loop_control:
+    loop_var: dir
+  tags:
+    - always
+
+- name: create mail directories - step 2
+  become: yes
+  file:
+    state: directory
+    path: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/{{ username }}/Maildir/{{ dir.0.path }}{{ dir.1 }}"
+    owner: vpopmail
+    group: vchkpw
+    mode: 0700
+  loop: "{{ filterdirs|product(standard_mail_subdirectories)|list }}"
+  loop_control:
+    loop_var: dir
+  tags:
+    - always
+
+# Write the .qmail file that will actually deliver mail to the user. The template will
+# set up the file appropriately, so that it contains any relevant instructions.
+
+- name: write .qmail file
+  become: yes
+  template:
+    src: templates/dot_qmail_user.j2
+    dest: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.qmail-{{ username }}"
+    owner: vpopmail
+    group: vchkpw
+    mode: 0644
   tags:
     - always

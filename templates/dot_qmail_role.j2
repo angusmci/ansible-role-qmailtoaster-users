@@ -1,5 +1,5 @@
 {% if target_roleset.action == "filter" %}
-| {{ path_preline }} {{ path_procmail }} -p -m {{ path_vpopmail_domains_dir }}{{ target_roleset.domain }}/.procmailrc-{{ target_roleset.user }}
+| {{ path_preline }} {{ path_procmail }} -p -m {{ path_vpopmail_domains_dir }}{{ target_roleset.domain }}/.procmail-{{ target_roleset.user }}/main.rc
 {% elif target_roleset.action == "deliver" %}
 {{ target_roleset.directory }}
 {% elif target_roleset.action == "forward" %}
