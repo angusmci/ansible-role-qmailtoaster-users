@@ -3,7 +3,7 @@
   become: yes
   command: "{{ path_vadddomain }} {{ domain.name }} {{ domain.password }}"
   args:
-    creates: "{{ path_vpopmail_domains_dir }}{{ domain.name }}"
+    creates: "{{ path_vpopmail_domains_dir }}/{{ domain.name }}"
   notify:
     - restart dovecot
   tags:
