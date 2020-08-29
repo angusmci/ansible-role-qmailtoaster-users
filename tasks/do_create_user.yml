@@ -6,7 +6,7 @@
 
 - name: create user
   become: yes
-  command: "{{ {{ path_vadduser }}}} -c '{{ comment }}' -q {{ quota }} {{ username }}@{{ userdomain }} {{ password }}"
+  command: "{{ path_vadduser }} -c '{{ comment }}' -q {{ quota }} {{ username }}@{{ userdomain }} {{ password }}"
   args:
     creates: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/{{ username }}"
   notify:
