@@ -45,17 +45,19 @@
     - always
 
 # If the user has the 'filter' flag set to true, create a set of 'rc.*' files that
-# will hold their procmail recipes.
+# will hold their procmail recipes. This will not overwrite existing files, and the
+# files initially created will be empty.
 
 - name: create procmail include files
   become: yes
   when: filter | bool
-  file:
-    state: file
-    path: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.procmail-{{ username }}/rc.{{ filterset }}"
+  template:
+    src: templates/dot_procmail_rc_other.j2
+    dest: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.procmail-{{ username }}/rc.{{ filterset }}"
     owner: vpopmail
     group: vchkpw
     mode: 0644
+    force: no
   loop: "{{ filtersets }}"
   loop_control:
     loop_var: filterset
