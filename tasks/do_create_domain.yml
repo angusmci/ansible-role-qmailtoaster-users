@@ -27,9 +27,13 @@
     - always
 
 - name: process sets of role accounts
-  become: yes
-  include: do_process_role_set.yml
+  include_tasks: do_create_role_accounts.yml
   vars:
-    domain: "{{ domain }}"
-    roleset: "{{ item }}"
-  with_items: "{{ domain.rolesets }}"
+    target_roleset: "{{ roleset }}"
+    target_domain: "{{ domain }}"
+  when: domain.rolesets is defined
+  loop: "{{ domain.rolesets }}"
+  loop_control:
+    loop_var: roleset
+  tags:
+    - always

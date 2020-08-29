@@ -1,0 +1,14 @@
+---
+- name: create role
+  become: yes
+  template:
+    src: templates/dot_qmail_role.j2
+    dest: /home/vpopmail/domains/{{ target_domain.name }}/.qmail_{{ role }}
+    owner: vpopmail
+    group: vchkpw
+    mode: 0644
+  loop: "{{ roleset_members[target_roleset.name] }}"
+  loop_control:
+    loop_var: role
+  tags:
+    - always

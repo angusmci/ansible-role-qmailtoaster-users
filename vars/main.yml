@@ -1,5 +1,88 @@
 ---
+# Paths
+#
+# Hardcoded paths to key pieces of mail-processing software.
+
 path_preline: /var/qmail/bin/preline
 path_procmail: /bin/procmail
 path_vdelivermail: /home/vpopmail/bin/vdelivermail
 path_vpopmail_domains_dir: /home/vpopmail/domains
+
+# Rolesets
+#
+# Sets of well-known role accounts that can be created using similar parameters.
+# See https://tools.ietf.org/html/rfc2142 for an explanation of role accounts.
+
+roleset_members:
+  business:
+    - info
+    - marketing
+    - sales
+    - support
+  network:
+    - abuse
+    - noc
+    - security
+  owner:
+    - admin
+    - billing
+  services:
+    - hostmaster
+    - mail
+    - postmaster
+  webmaster:
+    - webmaster
+  other:
+    - help
+    - contact
+    - feedback
+    - root
+    - service
+    - news
+    - ftp
+    - usenet
+    - uucp
+  standard:
+    - info
+    - marketing
+    - sales
+    - support
+    - abuse
+    - noc
+    - security
+    - admin
+    - billing
+    - hostmaster
+    - mail
+    - postmaster
+    - webmaster
+  minimal:
+    - info
+    - sales
+    - support
+    - abuse
+    - security
+    - webmaster
+  all:
+    - info
+    - marketing
+    - sales
+    - support
+    - abuse
+    - noc
+    - security
+    - admin
+    - billing
+    - hostmaster
+    - mail
+    - postmaster
+    - webmaster
+    - help
+    - contact
+    - feedback
+    - root
+    - service
+    - news
+    - ftp
+    - usenet
+    - uucp
