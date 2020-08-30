@@ -50,3 +50,18 @@
     loop_var: user
   tags:
     - always
+
+- name: create aliases
+  when: domain.aliases is defined
+  become: yes
+  template:
+    src: templates/dot_qmail_alias.j2
+    dest: "{{ path_vpopmail_domains_dir }}/{{ domain }}/.qmail-{{ alias.name }}"
+    owner: vpopmail
+    group: vchkpw
+    mode: 0644
+  loop: "{{ domain.aliases }}"
+  loop_control:
+    loop_var: alias
+  tags:
+    - always
