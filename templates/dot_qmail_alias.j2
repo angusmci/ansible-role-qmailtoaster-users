@@ -1,4 +1,4 @@
-{% if alias.action == "filter" %}
+{% if alias.filter | bool %}
 | {{ path_preline }} {{ path_procmail }} -p -m {{ path_vpopmail_domains_dir }}{{ alias.domain }}/.procmail-{{ alias.user }}/rc.main
 {% elif alias.action == "deliver" %}
 {{ alias.directory }}

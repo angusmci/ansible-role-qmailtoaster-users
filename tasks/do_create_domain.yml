@@ -40,8 +40,9 @@
     password: "{{ user.password }}"
     comment: "{{ user.comment | default('') }}"
     quota: "{{ user.quota | default('NOQUOTA') }}"
-    action: "{{ user.action | default('filter') }}"
+    action: "{{ user.action | default('deliver') }}"
     address: "{{ user.address | default('') }}"
+    filter: "{{ user.filter | default('no') }}"
     filtersets: "{{ user.filtersets | default(standard_filter_sets) }}"
     filterdirs: "{{ user.filterdirs | default(standard_filter_directories) }}"
   when: domain.users is defined

@@ -1,4 +1,4 @@
-{% if target_roleset.action == "filter" %}
+{% if target_roleset.filter | bool %}
 | {{ path_preline }} {{ path_procmail }} -p -m {{ path_vpopmail_domains_dir }}{{ target_roleset.domain }}/.procmail-{{ target_roleset.user }}/rc.main
 {% elif target_roleset.action == "deliver" %}
 {{ target_roleset.directory }}

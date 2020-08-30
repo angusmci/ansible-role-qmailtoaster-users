@@ -19,7 +19,7 @@
 -
 - name: create procmail directory
   become: yes
-  when: action == 'filter' or action == 'filterforward' or action == 'filterdelete'
+  when: filter | bool
   file:
     state: directory
     path: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.procmail-{{ username }}"
@@ -34,7 +34,7 @@
 
 - name: create procmailrc
   become: yes
-  when: action == 'filter' or action == 'filterforward' or action == 'filterdelete'
+  when: filter | bool
   template:
     src: templates/dot_procmail_rc_main.j2
     dest: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.procmail-{{ username }}/rc.main"
@@ -50,7 +50,7 @@
 
 - name: create procmail include files
   become: yes
-  when: action == 'filter' or action == 'filterforward' or action == 'filterdelete'
+  when: filter | bool
   template:
     src: templates/dot_procmail_rc_other.j2
     dest: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.procmail-{{ username }}/rc.{{ filterset }}"
@@ -69,7 +69,7 @@
 
 - name: create mail directories - step 1
   become: yes
-  when: action == 'filter' or action == 'filterforward' or action == 'filterdelete'
+  when: filter | bool
   file:
     state: directory
     path: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/{{ username }}/Maildir/{{ dir.path }}"
@@ -84,7 +84,7 @@
 
 - name: create mail directories - step 2
   become: yes
-  when: action == 'filter' or action == 'filterforward' or action == 'filterdelete'
+  when: filter | bool
   file:
     state: directory
     path: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/{{ username }}/Maildir/{{ dir.0.path }}{{ dir.1 }}"
