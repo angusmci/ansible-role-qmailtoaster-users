@@ -1,3 +1,0 @@
----
-- debug:
-    msg: "Processing roleset {{ roleset.name }} for domain {{ domain }}"
