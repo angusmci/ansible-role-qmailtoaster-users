@@ -1,4 +1,4 @@
-{% if filter | bool %}
+{% if filter | default('no') %}
 | {{ path_preline }} {{ path_procmail }} -p -m {{ path_vpopmail_domains_dir }}/{{ userdomain }}/.procmail-{{ username }}/rc.main
 {% elif action == "delete" %}
 | {{ path_vdelivermail }} '' delete

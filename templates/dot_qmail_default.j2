@@ -1,4 +1,4 @@
-{% if domain.default.filter | bool %}
+{% if domain.default.filter | default('no') %}
 | {{ path_preline }} {{ path_procmail }} -p -m {{ path_vpopmail_domains_dir }}{{ domain.default.domain }}/.procmail-{{ domain.default.user }}/rc.main
 {% elif domain.default.action == "deliver" %}
 {{ domain.default.directory }}
