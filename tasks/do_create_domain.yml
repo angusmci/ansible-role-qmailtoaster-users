@@ -57,7 +57,7 @@
   become: yes
   template:
     src: templates/dot_qmail_alias.j2
-    dest: "{{ path_vpopmail_domains_dir }}/{{ domain }}/.qmail-{{ alias.name }}"
+    dest: "{{ path_vpopmail_domains_dir }}/{{ domain.name }}/.qmail-{{ alias.name }}"
     owner: vpopmail
     group: vchkpw
     mode: 0644
