@@ -35,6 +35,7 @@ roleset_members:
   webmaster:
     - webmaster
   other:
+    - accounting
     - help
     - contact
     - feedback
@@ -44,6 +45,8 @@ roleset_members:
     - ftp
     - usenet
     - uucp
+    - guest
+    - home
   standard:
     - info
     - marketing
@@ -64,30 +67,34 @@ roleset_members:
     - support
     - abuse
     - security
-    - webmaster
-  all:
-    - info
-    - marketing
-    - sales
-    - support
-    - abuse
-    - noc
-    - security
-    - admin
-    - billing
-    - hostmaster
-    - mail
     - postmaster
     - webmaster
-    - help
+  all:
+    - abuse
+    - accounting
+    - admin
+    - billing
     - contact
     - feedback
-    - root
-    - service
-    - news
     - ftp
+    - guest
+    - help
+    - home
+    - hostmaster
+    - info
+    - mail
+    - marketing
+    - news
+    - noc
+    - postmaster
+    - root
+    - sales
+    - security
+    - service
+    - support
     - usenet
     - uucp
+    - webmaster
 
 # Filter directories
 #
