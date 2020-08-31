@@ -1,9 +1,11 @@
 {% if target_roleset.filter | default(false) %}
 | {{ path_preline }} {{ path_procmail }} -p -m {{ path_vpopmail_domains_dir }}{{ target_roleset.domain }}/.procmail-{{ target_roleset.user }}/rc.main
 {% elif target_roleset.action == "deliver" %}
+{{ path_vpopmail_domains_dir }}/{{ target_roleset.domain }}/{{ target_roleset.user }}/Maildir/
+{% elif domain.default.action == "write" %}
 {{ target_roleset.directory }}
 {% elif target_roleset.action == "forward" %}
-{{ target_roleset.address }}
+&{{ target_roleset.address }}
 {% elif target_roleset.action == "delete" %}
 | {{ path_vdelivermail }} '' delete
 {% endif %}

@@ -1,9 +1,11 @@
 {% if alias.filter | default(false) %}
 | {{ path_preline }} {{ path_procmail }} -p -m {{ path_vpopmail_domains_dir }}{{ alias.domain }}/.procmail-{{ alias.user }}/rc.main
 {% elif alias.action == "deliver" %}
+{{ path_vpopmail_domains_dir }}/{{ alias.domain }}/{{ alias.user }}/Maildir/
+{% elif domain.default.action == "write" %}
 {{ alias.directory }}
 {% elif alias.action == "forward" %}
-{{ alias.address }}
+&{{ alias.address }}
 {% elif alias.action == "delete" %}
 | {{ path_vdelivermail }} '' delete
 {% endif %}

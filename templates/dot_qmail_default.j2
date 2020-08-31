@@ -1,9 +1,11 @@
 {% if domain.default.filter | default(false) %}
 | {{ path_preline }} {{ path_procmail }} -p -m {{ path_vpopmail_domains_dir }}{{ domain.default.domain }}/.procmail-{{ domain.default.user }}/rc.main
 {% elif domain.default.action == "deliver" %}
+{{ path_vpopmail_domains_dir }}/{{ domain.default.domain }}/{{ domain.default.user }}/Maildir/
+{% elif domain.default.action == "write" %}
 {{ domain.default.directory }}
 {% elif domain.default.action == "forward" %}
-{{ domain.default.address }}
+&{{ domain.default.address }}
 {% elif domain.default.action == "delete" %}
 | {{ path_vdelivermail }} '' delete
 {% endif %}
