@@ -1,0 +1,22 @@
+# File: .maildrop-{{ username }}/main
+#
+# {{ ansible_managed }}
+
+LOGFILE={{ path_vpopmail_domains_dir }}/{{ userdomain }}/.maildrop-{{ username }}/log
+
+MAILDIR="{{ path_vpopmail_domains_dir }}/{{ userdomain }}/{{ username }}/Maildir/"
+{% for filterdir in filterdirs %}
+{{ filterdir.name }}="{{ path_vpopmail_domains_dir }}/{{ userdomain }}/{{ username }}/Maildir/{{ filterdir.path }}"
+{% endfor %}
+
+{% for filterset in filtersets %}
+include "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.maildrop-{{ username }}/{{ filterset }}"
+{% endfor %}
+
+{% if action == "forward" %}
+to "!{{ address }}"
+{% elif action == "delete" %}
+to "/dev/null"
+{% else %}
+to "$MAILDIR"
+{% endif %}

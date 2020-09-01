@@ -9,6 +9,14 @@ path_vdelivermail: /home/vpopmail/bin/vdelivermail
 path_vadddomain: /home/vpopmail/bin/vadddomain
 path_vadduser: /home/vpopmail/bin/vadduser
 path_vpopmail_domains_dir: /home/vpopmail/domains
+path_maildrop: /usr/bin/maildrop
+
+# filter_using
+#
+# Choose the technology used for filtering messages. This may be either 'maildrop'
+# (the default) or 'procmail'.
+
+filter_using: "maildrop"
 
 # Rolesets
 #

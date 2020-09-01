@@ -14,12 +14,12 @@
   tags:
     - always
 
-# If the user has the 'filter' flag set to true, create a .procmail directory for the
-# user. The directory will hold the user's procmail log, and any include files.
--
+# If the user has the 'filter' flag set to true, create a filter directory for the
+# user. The directory will hold the user's filter log, and any include files.
+
 - name: create procmail directory
   become: yes
-  when: filter | bool
+  when: (filter | bool) and filter_using == "procmail"
   file:
     state: directory
     path: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.procmail-{{ username }}"
@@ -29,12 +29,24 @@
   tags:
     - always
 
-# If the user has the 'filter' flag set to true, create a .procmailrc file for that user
-# that will contain a skeleton definition for procmail filtering.
-
-- name: create procmailrc
+- name: create maildrop directory
   become: yes
-  when: filter | bool
+  when: (filter | bool) and filter_using == "maildrop"
+  file:
+    state: directory
+    path: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.maildrop-{{ username }}"
+    owner: vpopmail
+    group: vchkpw
+    mode: 0755
+  tags:
+    - always
+
+# If the user has the 'filter' flag set to true, create a main filter file for that user
+# that will contain a skeleton definition for filtering.
+
+- name: create procmail main file
+  become: yes
+  when: (filter | bool) and filter_using == "procmail"
   template:
     src: templates/dot_procmail_rc_main.j2
     dest: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.procmail-{{ username }}/rc.main"
@@ -44,19 +56,47 @@
   tags:
     - always
 
-# If the user has the 'filter' flag set to true, create a set of 'rc.*' files that
-# will hold their procmail recipes. This will not overwrite existing files, and the
+- name: create maildrop main file
+  become: yes
+  when: (filter | bool) and filter_using == "maildrop"
+  template:
+    src: templates/dot_maildrop_main.j2
+    dest: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.maildrop-{{ username }}/main"
+    owner: vpopmail
+    group: vchkpw
+    mode: 0600
+  tags:
+    - always
+
+# If the user has the 'filter' flag set to true, create a set of include files that
+# will hold subsidiary filter instructions. This will not overwrite existing files, and the
 # files initially created will be empty.
 
 - name: create procmail include files
   become: yes
-  when: filter | bool
+  when: (filter | bool) and filter_using == "procmail"
   template:
     src: templates/dot_procmail_rc_other.j2
     dest: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.procmail-{{ username }}/rc.{{ filterset }}"
     owner: vpopmail
     group: vchkpw
     mode: 0644
+    force: no
+  loop: "{{ filtersets }}"
+  loop_control:
+    loop_var: filterset
+  tags:
+    - always
+
+- name: create maildrop include files
+  become: yes
+  when: (filter | bool) and filter_using == "maildrop"
+  template:
+    src: templates/dot_maildrop_other.j2
+    dest: "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.maildrop-{{ username }}/{{ filterset }}"
+    owner: vpopmail
+    group: vchkpw
+    mode: 0600
     force: no
   loop: "{{ filtersets }}"
   loop_control:
