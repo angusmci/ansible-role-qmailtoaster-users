@@ -9,6 +9,8 @@ MAILDIR="{{ path_vpopmail_domains_dir }}/{{ userdomain }}/{{ username }}/Maildir
 {{ filterdir.name }}="{{ path_vpopmail_domains_dir }}/{{ userdomain }}/{{ username }}/Maildir/{{ filterdir.path }}"
 {% endfor %}
 
+logfile $LOGFILE
+
 {% for filterset in filtersets %}
 include "{{ path_vpopmail_domains_dir }}/{{ userdomain }}/.maildrop-{{ username }}/{{ filterset }}"
 {% endfor %}
