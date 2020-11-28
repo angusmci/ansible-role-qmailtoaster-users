@@ -13,7 +13,7 @@
   become: yes
   template:
     src: templates/dot_qmail_default.j2
-    dest: "{{ path_vpopmail_domains_dir }}/{{ domain.name }}/.qmail_default"
+    dest: "{{ path_vpopmail_domains_dir }}/{{ domain.name }}/.qmail-default"
     owner: vpopmail
     group: vchkpw
     mode: 0644

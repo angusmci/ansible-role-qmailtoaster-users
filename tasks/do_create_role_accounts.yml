@@ -3,7 +3,7 @@
   become: yes
   template:
     src: templates/dot_qmail_role.j2
-    dest: /home/vpopmail/domains/{{ target_domain.name }}/.qmail_{{ role }}
+    dest: /home/vpopmail/domains/{{ target_domain.name }}/.qmail-{{ role }}
     owner: vpopmail
     group: vchkpw
     mode: 0644
